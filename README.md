@@ -1,4 +1,4 @@
-Cloudwatch Exporter 
+# Cloudwatch Exporter 
 
 This repo contains config used to deploy prometheus-cloudwatch-exporter to openshift
 
