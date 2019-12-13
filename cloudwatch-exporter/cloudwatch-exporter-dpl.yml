@@ -1,0 +1,80 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: prometheus-cloudwatch-exporter-intly
+  labels:
+    app: prometheus-cloudwatch-exporter-intly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-cloudwatch-exporter
+      release: prometheus-cloudwatch-exporter-intly
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: prometheus-cloudwatch-exporter
+        release: prometheus-cloudwatch-exporter-intly
+      annotations:
+        checksum/config: be506978d014b24001d7107d961f07e18050208ad28ef87a4e5f41cfc96e2f88
+    spec:
+      volumes:
+        - name: vol-prometheus-cloudwatch-exporter
+          configMap:
+            name: prometheus-cloudwatch-exporter-config
+            defaultMode: 420
+      containers:
+        - resources: {}
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: container-port
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          name: prometheus-cloudwatch-exporter-intly
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: container-port
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: prometheus-cloudwatch-exporter-sec
+                  key: aws_access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: prometheus-cloudwatch-exporter-sec
+                  key: aws_secret_access_key
+          ports:
+            - name: container-port
+              containerPort: 9106
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: vol-prometheus-cloudwatch-exporter
+              mountPath: /config
+          image: 'prom/cloudwatch-exporter:cloudwatch_exporter-0.6.0'
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

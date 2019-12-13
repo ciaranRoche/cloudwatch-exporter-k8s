@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: prometheus-cloudwatch-exporter
+  labels:
+    app: prometheus-cloudwatch-exporter
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9106
+      targetPort: container-port
+  selector:
+    app: prometheus-cloudwatch-exporter
+  type: ClusterIP
+  sessionAffinity: None
+status:
+  loadBalancer: {}

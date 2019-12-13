@@ -1,0 +1,10 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: prometheus-cloudwatch-exporter-sec
+  labels:
+    app: prometheus-cloudwatch-exporter-intly 
+data:
+  aws_access_key_id: REPLACE_ME
+  aws_secret_access_key: REPLACE_ME
+type: Opaque
