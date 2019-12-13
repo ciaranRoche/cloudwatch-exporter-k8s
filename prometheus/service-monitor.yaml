@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-cloudwatch-exporter
+  labels:
+    team: cloudwatch
+spec:
+  selector:
+    matchLabels:
+      app: prometheus-cloudwatch-exporter
+  endpoints:
+  - port: web
