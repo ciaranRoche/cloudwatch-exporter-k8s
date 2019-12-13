@@ -6,7 +6,7 @@ metadata:
     app: prometheus-cloudwatch-exporter
 spec:
   ports:
-    - name: http
+    - name: web
       protocol: TCP
       port: 9106
       targetPort: container-port
