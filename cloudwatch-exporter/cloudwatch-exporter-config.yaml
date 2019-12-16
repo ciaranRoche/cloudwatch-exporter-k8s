@@ -10,27 +10,118 @@ data:
     region: eu-west-1
     period_seconds: 240
     metrics:
-    - aws_namespace: AWS/ELB
-      aws_metric_name: HealthyHostCount
-      aws_dimensions: [AvailabilityZone, LoadBalancerName]
+    # RDS Metrics
+    - aws_namespace: AWS/RDS
+      aws_metric_name: CPUUtilization
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Maximum, Minimum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: DatabaseConnections
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: FreeableMemory
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: FreeStorageSpace
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: NetworkReceiveThroughput
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: NetworkTransmitThroughput
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: NetworkReceiveThroughput
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: ReadLatency
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: ReadThroughput
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: WriteIOPS
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: WriteLatency
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: WriteThroughput
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/RDS
+      aws_metric_name: AllocatedStorage
+      aws_dimensions: [DBInstanceIdentifier]
+      aws_statistics: [Average, Sum]
+
+
+    # ElastiCache Metrics
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CPUUtilization
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Maximum, Minimum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: NetworkBytesIn
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: NetworkBytesOut
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: FreeableMemory
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: BytesUsedForCache
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CurrConnections
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: NewConnections
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CacheHits
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: CacheMisses
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Sum]
+    - aws_namespace: AWS/ElastiCache
+      aws_metric_name: ReplicationLag
+      aws_dimensions: [CacheClusterId]
+      aws_statistics: [Average, Sum]
+
+    # S3 Metrics
+    - aws_namespace: "AWS/S3"
+      aws_dimensions: [BucketName, StorageType]
+      aws_metric_name: BucketSizeBytes
       aws_statistics: [Average]
-
-    - aws_namespace: AWS/ELB
-      aws_metric_name: UnHealthyHostCount
-      aws_dimensions: [AvailabilityZone, LoadBalancerName]
+      range_seconds: 172800
+      period_seconds: 86400
+      set_timestamp: false
+    - aws_namespace: "AWS/S3"
+      aws_dimensions: [BucketName, StorageType]
+      aws_metric_name: NumberOfObjects
       aws_statistics: [Average]
+      range_seconds: 172800
+      period_seconds: 86400
+      set_timestamp: false
 
-    - aws_namespace: AWS/ELB
-      aws_metric_name: RequestCount
-      aws_dimensions: [AvailabilityZone, LoadBalancerName]
-      aws_statistics: [Sum]
 
-    - aws_namespace: AWS/ELB
-      aws_metric_name: Latency
-      aws_dimensions: [AvailabilityZone, LoadBalancerName]
-      aws_statistics: [Average]
-
-    - aws_namespace: AWS/ELB
-      aws_metric_name: SurgeQueueLength
-      aws_dimensions: [AvailabilityZone, LoadBalancerName]
-      aws_statistics: [Maximum, Sum]
+  
